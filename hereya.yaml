@@ -1,5 +1,5 @@
-project: hereya/fullstack-app-template # replace with your project
-workspace: hereya-dev # replace with default workspace
+project: hereya/fullstack-app-template
+workspace: hereya-dev
 packages:
   hereya/postgres:
     version: 0.3.1
