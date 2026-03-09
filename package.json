@@ -4,14 +4,26 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "dev": "hereya run -- react-router dev",
+    "start": "prisma migrate deploy && prisma generate && react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc",
+    "postinstall": "prisma generate",
+    "test:up": "hereya flow up --profile test -s hereya/postgres -s hereya/session-secret",
+    "test:down": "hereya flow down --profile test -s hereya/postgres -s hereya/session-secret",
+    "test": "hereya flow run --profile test -- vitest --pool=threads",
+    "test:run": "hereya flow run --profile test -- vitest "
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.4.2",
+    "@prisma/client": "^7.4.2",
     "@react-router/node": "7.12.0",
     "@react-router/serve": "7.12.0",
+    "@simplewebauthn/browser": "^13.2.2",
+    "@simplewebauthn/server": "^13.2.3",
     "isbot": "^5.1.31",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0",
+    "postmark": "^4.0.7",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "7.12.0"
@@ -19,12 +31,19 @@
   "devDependencies": {
     "@react-router/dev": "7.12.0",
     "@tailwindcss/vite": "^4.1.13",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22",
+    "@types/pg": "^8.18.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "jsdom": "^28.1.0",
+    "prisma": "^7.4.2",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "vite": "^7.1.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.18"
   }
 }

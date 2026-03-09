@@ -1,0 +1,15 @@
+project: hereya/fullstack-app-template # replace with your project
+workspace: hereya-dev # replace with default workspace
+packages:
+  hereya/postgres:
+    version: 0.3.1
+    onDeploy:
+      pkg: hereya/aws-aurora-postgres
+      version: 0.3.1
+  hereya/postmark-client:
+    version: ""
+  hereya/session-secret:
+    version: ""
+deploy:
+  hereya/aws-ecs-deploy:
+    version: ""
