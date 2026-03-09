@@ -23,6 +23,16 @@ The users of this template are **non-technical**. When interacting with them:
 
 ## Development Workflow
 
+**MANDATORY: Before making ANY code changes, you MUST run the full dev setup and verify tests pass:**
+
+1. `npm install` — Install dependencies
+2. `hereya up` — Provision dev infra + export env vars
+3. `npm run test:up` — Provision test infra
+4. `npm run dev` — Start dev server on port 5177 (run in background)
+5. `npm run test -- run` — Run all tests and verify they pass
+5. Only after all tests pass, proceed with code changes
+6. After changes, run `npm run test -- run` again to confirm nothing is broken
+
 ```bash
 hereya up                  # 1. Provision dev infra + export env vars
 npm run test:up            # 2. Provision test infra (run once per session)
