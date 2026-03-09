@@ -10,6 +10,8 @@ packages:
     version: ""
   hereya/session-secret:
     version: ""
+  aws/s3bucket:
+    version: 0.3.0
 deploy:
   hereya/aws-ecs-deploy:
     version: ""

@@ -49,6 +49,8 @@ All env vars are managed by Hereya. **Never create `.env` files.** Check availab
 | `SESSION_SECRET` | hereya/session-secret | Cookie signing secret |
 | `AUTH_EMAIL` | hereyaconfig/hereyastaticenv | Sender email for login codes |
 | `APP_URL` | hereyaconfig/hereyastaticenv | App origin for WebAuthn RP config |
+| `bucketName` | aws/s3bucket | S3 bucket name for file storage |
+| `awsRegion` | aws/s3bucket | AWS region of the S3 bucket |
 
 To run any command that needs env vars: `hereya run -- <command>`
 
@@ -60,6 +62,7 @@ app/
 │   ├── auth.server.ts          # Session management, requireUser, requireAdmin
 │   ├── db.server.ts            # Prisma client singleton (PrismaPg adapter)
 │   ├── mail.server.ts          # Postmark email wrapper
+│   ├── storage.server.ts       # S3 file storage (upload, download, presigned URLs)
 │   └── webauthn.server.ts      # WebAuthn registration/authentication
 ├── routes/                     # Page and API routes
 │   ├── home.tsx                # / — redirects to dashboard or login
