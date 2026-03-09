@@ -104,6 +104,11 @@ test/
 - Config in `prisma.config.ts`, schema in `prisma/schema.prisma`
 - After schema changes: `npx prisma generate` then `npm run typecheck`
 - Create migrations: `hereya run -- npx prisma migrate dev --name <name>`
+- **MANDATORY: After any database change (schema changes, migrations), you MUST restart the full dev workflow:**
+  1. Stop the dev server
+  2. Run `npm run test:down` then `npm run test:up` to reprovision test infra
+  3. Run `npm run dev` to restart the dev server
+  4. Run `npm run test -- run` to verify all tests still pass
 
 ### Routes
 - Route types imported from `./+types/<routename>`
