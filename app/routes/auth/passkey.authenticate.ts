@@ -1,1 +1,1 @@
-export { action } from "~/lib/passkey-authenticate.server";
+export { action } from "./passkey.authenticate.server";
