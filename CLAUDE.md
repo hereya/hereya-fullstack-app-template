@@ -28,10 +28,11 @@ The users of this template are **non-technical**. When interacting with them:
 1. `npm install` — Install dependencies
 2. `hereya up` — Provision dev infra + export env vars
 3. `npm run test:up` — Provision test infra
-4. `npm run dev` — Start dev server on port 5177 (run in background)
-5. `npm run test -- run` — Run all tests and verify they pass
-5. Only after all tests pass, proceed with code changes
-6. After changes, run `npm run test -- run` again to confirm nothing is broken
+4. Kill any existing dev server process on port 5177 before starting a new one
+5. `npm run dev` — Start dev server on port 5177 (run in background)
+6. `npm run test -- run` — Run all tests and verify they pass
+7. Only after all tests pass, proceed with code changes
+8. After changes, run `npm run test -- run` again to confirm nothing is broken
 
 ```bash
 hereya up                  # 1. Provision dev infra + export env vars
