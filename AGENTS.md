@@ -48,6 +48,8 @@ npm run test:down          # Tear down test infra
 
 Deploy to staging: `hereya deploy -w hereya-staging`
 
+**Note:** The first deployment can take 10+ minutes due to Aurora database and ECS cluster creation. This is normal — do not cancel or retry. Subsequent deployments will be much faster.
+
 ## Environment Variables
 
 All env vars are managed by Hereya. **Never create `.env` files.** Check available vars with `hereya env -l`.
