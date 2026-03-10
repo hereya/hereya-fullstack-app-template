@@ -1,0 +1,9 @@
+autoDeleteObjects: "true"
+
+---
+profile: staging
+autoDeleteObjects: "false"
+
+---
+profile: production
+autoDeleteObjects: "false"
