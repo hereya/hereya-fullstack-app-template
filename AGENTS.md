@@ -120,6 +120,11 @@ test/
 - Protected routes: use `requireUser(request)` from `~/lib/auth.server`
 - Admin-only routes: use `requireAdmin(request)` from `~/lib/auth.server`
 
+### Navigation
+- Use React Router's `<Link>` and `<NavLink>` components for all internal links — never plain `<a>` tags
+- Import from `react-router`: `import { Link, NavLink } from "react-router"`
+- Plain `<a>` tags are only for external URLs
+
 ### Testing
 - **Every new feature must include automated tests.**
 - Tests colocated with source: `app/routes/auth/login.test.ts`
