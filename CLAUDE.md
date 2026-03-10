@@ -119,6 +119,7 @@ test/
 - New routes must be registered in `app/routes.ts`
 - Protected routes: use `requireUser(request)` from `~/lib/auth.server`
 - Admin-only routes: use `requireAdmin(request)` from `~/lib/auth.server`
+- **NEVER add authentication or protection to the `/health` route** — it must remain unauthenticated. ECS uses this endpoint for health checks during deployment, and protecting it will cause deployments to fail.
 
 ### Navigation
 - Use React Router's `<Link>` and `<NavLink>` components for all internal links — never plain `<a>` tags
