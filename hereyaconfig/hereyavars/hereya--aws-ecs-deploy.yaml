@@ -1,1 +1,2 @@
 customDomain: fullstack-tpl.hereyalab.dev
+healthCheckPath: /health
