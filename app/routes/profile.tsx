@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Link, useFetcher, useRevalidator, useSearchParams } from "react-router";
 import type { Route } from "./+types/profile";
 import { requireUser } from "~/lib/auth.server";
@@ -63,15 +63,18 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   const { user, passkeys } = loaderData;
   const [searchParams, setSearchParams] = useSearchParams();
   const [passkeyStatus, setPasskeyStatus] = useState<string | null>(null);
+  const initialNewPasskey = useRef(searchParams.get("newPasskey"));
   const [newPasskeyId, setNewPasskeyId] = useState<string | null>(
-    searchParams.get("newPasskey")
+    initialNewPasskey.current
   );
   const revalidator = useRevalidator();
 
-  // Clear the query param once we've captured it
-  if (searchParams.has("newPasskey")) {
-    setSearchParams({}, { replace: true });
-  }
+  useEffect(() => {
+    if (initialNewPasskey.current) {
+      setSearchParams({}, { replace: true });
+      initialNewPasskey.current = null;
+    }
+  }, [setSearchParams]);
 
   async function handleRegisterPasskey() {
     setPasskeyStatus(null);
