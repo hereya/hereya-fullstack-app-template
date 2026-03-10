@@ -11,4 +11,5 @@ export default [
   ]),
   route("dashboard", "routes/dashboard.tsx"),
   route("admin/users", "routes/admin/users.tsx"),
+  route("health", "routes/health.ts"),
 ] satisfies RouteConfig;
