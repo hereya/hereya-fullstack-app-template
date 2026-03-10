@@ -1,4 +1,5 @@
-import { Form, Link } from "react-router";
+import { useState } from "react";
+import { Form, Link, useNavigate } from "react-router";
 import type { Route } from "./+types/dashboard";
 import { requireUser } from "~/lib/auth.server";
 import { getDb } from "~/lib/db.server";
@@ -15,6 +16,45 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { user, hasPasskeys } = loaderData;
+  const [passkeyStatus, setPasskeyStatus] = useState<string | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
+
+  async function handleRegisterPasskey() {
+    setPasskeyStatus(null);
+    setIsRegistering(true);
+    try {
+      const optionsRes = await fetch("/auth/passkey/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "options" }),
+      });
+      const options = await optionsRes.json();
+
+      const { startRegistration } = await import("@simplewebauthn/browser");
+      const regResponse = await startRegistration({ optionsJSON: options });
+
+      const verifyRes = await fetch("/auth/passkey/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "verify", response: regResponse }),
+      });
+      const result = await verifyRes.json();
+
+      if (result.verified) {
+        navigate(`/profile?newPasskey=${result.passkeyId}`);
+      } else {
+        setPasskeyStatus("Failed to register passkey.");
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error && e.name === "NotAllowedError") {
+        setIsRegistering(false);
+        return;
+      }
+      setPasskeyStatus("Failed to register passkey.");
+    }
+    setIsRegistering(false);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,13 +107,18 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
               <p className="text-sm text-on-surface-variant mt-1">
                 Add a passkey for faster, passwordless sign-in on this device.
               </p>
+              {passkeyStatus && (
+                <p className="text-sm text-error mt-2">{passkeyStatus}</p>
+              )}
             </div>
-            <Link
-              to="/profile"
-              className="shrink-0 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-on-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
+            <button
+              type="button"
+              onClick={handleRegisterPasskey}
+              disabled={isRegistering}
+              className="shrink-0 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-on-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors disabled:opacity-50"
             >
-              Set up a passkey
-            </Link>
+              {isRegistering ? "Registering…" : "Set up a passkey"}
+            </button>
           </div>
         )}
       </main>
