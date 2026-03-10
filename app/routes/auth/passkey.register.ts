@@ -1,13 +1,15 @@
 import type { Route } from "./+types/passkey.register";
-import { requireUser, getSession } from "~/lib/auth.server";
-import {
-  generatePasskeyRegistrationOptions,
-  verifyPasskeyRegistration,
-} from "~/lib/webauthn.server";
 import { createCookieSessionStorage } from "react-router";
 
-function getChallengeStorage() {
-  return createCookieSessionStorage({
+export async function action({ request }: Route.ActionArgs) {
+  const { requireUser } = await import("~/lib/auth.server");
+  const { generatePasskeyRegistrationOptions, verifyPasskeyRegistration } =
+    await import("~/lib/webauthn.server");
+
+  const user = await requireUser(request);
+  const body = await request.json();
+
+  const challengeStorage = createCookieSessionStorage({
     cookie: {
       name: "__webauthn-challenge",
       httpOnly: true,
@@ -18,13 +20,6 @@ function getChallengeStorage() {
       secure: process.env.NODE_ENV === "production",
     },
   });
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  const user = await requireUser(request);
-  const body = await request.json();
-
-  const challengeStorage = getChallengeStorage();
 
   if (body.action === "options") {
     const options = await generatePasskeyRegistrationOptions(user.id);
