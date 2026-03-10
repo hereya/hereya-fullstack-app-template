@@ -34,6 +34,7 @@ model Passkey {
   id                  String   @id @default(uuid())
   userId              String
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String   @default("My passkey")
   credentialId        String   @unique
   credentialPublicKey Bytes
   counter             BigInt

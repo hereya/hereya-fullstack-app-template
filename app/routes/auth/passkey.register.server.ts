@@ -52,7 +52,7 @@ export async function action({ request }: { request: Request }) {
     );
 
     return new Response(
-      JSON.stringify({ verified: verification.verified }),
+      JSON.stringify({ verified: verification.verified, passkeyId: verification.passkeyId }),
       {
         headers: {
           "Content-Type": "application/json",

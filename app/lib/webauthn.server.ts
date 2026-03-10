@@ -51,7 +51,7 @@ export async function verifyPasskeyRegistration(
   userId: string,
   response: RegistrationResponseJSON,
   expectedChallenge: string
-): Promise<VerifiedRegistrationResponse> {
+): Promise<VerifiedRegistrationResponse & { passkeyId?: string }> {
   const { rpID, origin } = getRpConfig();
 
   const verification = await verifyRegistrationResponse({
@@ -61,22 +61,27 @@ export async function verifyPasskeyRegistration(
     expectedRPID: rpID,
   });
 
+  let passkeyId: string | undefined;
+
   if (verification.verified && verification.registrationInfo) {
     const { credential } = verification.registrationInfo;
     const db = getDb();
 
-    await db.passkey.create({
+    const existingCount = await db.passkey.count({ where: { userId } });
+    const passkey = await db.passkey.create({
       data: {
         userId,
+        name: `Passkey ${existingCount + 1}`,
         credentialId: credential.id,
         credentialPublicKey: Buffer.from(credential.publicKey),
         counter: BigInt(credential.counter),
         transports: response.response.transports ?? [],
       },
     });
+    passkeyId = passkey.id;
   }
 
-  return verification;
+  return { ...verification, passkeyId };
 }
 
 export async function generatePasskeyAuthenticationOptions() {

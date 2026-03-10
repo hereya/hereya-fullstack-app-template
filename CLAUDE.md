@@ -80,6 +80,7 @@ app/
 ├── routes/                     # Page and API routes
 │   ├── home.tsx                # / — redirects to dashboard or login
 │   ├── dashboard.tsx           # /dashboard — protected user page
+│   ├── profile.tsx             # /profile — passkey management + user profile
 │   ├── admin/users.tsx         # /admin/users — admin user management
 │   └── auth/
 │       ├── login.tsx           # /auth/login — email + passkey login

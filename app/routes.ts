@@ -10,6 +10,7 @@ export default [
     route("passkey/authenticate", "routes/auth/passkey.authenticate.ts"),
   ]),
   route("dashboard", "routes/dashboard.tsx"),
+  route("profile", "routes/profile.tsx"),
   route("admin/users", "routes/admin/users.tsx"),
   route("health", "routes/health.ts"),
 ] satisfies RouteConfig;
